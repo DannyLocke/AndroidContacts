@@ -1,5 +1,7 @@
 package com.theironyard.androidcontacts;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemLongClickListener
-        //, AdapterView.OnItemClickListener
-{
+public class MainActivity extends Activity implements View.OnClickListener,
+        AdapterView.OnItemLongClickListener  {
 
     ArrayAdapter<String> contacts;
 
@@ -55,12 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-//    @Override
-//    public boolean OnItemClickListener(AdapterView<?> adapterView, View view, int position, long id) {
-//        String contact = contacts.getItem(position);
-//        contacts.add(contact);
-//        return true;
-//
-//    }
+
 
 }//end MainActivity
