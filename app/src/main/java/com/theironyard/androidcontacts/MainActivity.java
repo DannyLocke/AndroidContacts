@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemLongClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemLongClickListener
+        //, AdapterView.OnItemClickListener
+{
 
     ArrayAdapter<String> contacts;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String contactName = name.getText().toString();
         String contactNumber = number.getText().toString();
 
-        contacts.add(contactName + " (" + contactNumber + ")");
+        contacts.add(contactName + " (" + contactNumber + ")"); //add & combine edit fields
 
         name.setText("");
         number.setText("");
@@ -53,31 +55,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+//    @Override
+//    public boolean OnItemClickListener(AdapterView<?> adapterView, View view, int position, long id) {
+//        String contact = contacts.getItem(position);
+//        contacts.add(contact);
+//        return true;
+//
+//    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+}//end MainActivity
