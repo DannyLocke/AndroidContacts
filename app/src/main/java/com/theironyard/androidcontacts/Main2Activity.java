@@ -16,14 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity
-        //implements View.OnClickListener
-        {
+        implements View.OnClickListener
+{
+    EditText newName;
+    EditText newNumber;
 
-//    TextView contact;
-//    EditText contactNotes;
-//
-//    int position = 0;
-
+    int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,9 @@ public class Main2Activity extends AppCompatActivity
 
         Intent intent = getIntent();
         String contact = intent.getStringExtra(MainActivity.CONTACT_CARD);
+
         TextView textView = new TextView(this);
+
         textView.setTextSize(25);
         textView.setText(contact);
 
@@ -40,13 +40,14 @@ public class Main2Activity extends AppCompatActivity
         layout.addView(textView);
     }
 
-//    @Override
-//    public void onClick(View view) {
-//
-//        Intent returnIntent = new Intent();
-//        returnIntent.putExtra("contactNotes", contactNotes.getText().toString());
-//        returnIntent.putExtra("position", position);
-//        setResult(Activity.RESULT_OK, returnIntent);
-//        finish();
-//    }
+    @Override
+    public void onClick(View view) {
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("newName", newName.getText().toString());
+        returnIntent.putExtra("newNumber", newNumber.getText().toString());
+        returnIntent.putExtra("position", position);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
 }

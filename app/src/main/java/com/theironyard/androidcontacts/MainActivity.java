@@ -1,6 +1,5 @@
 package com.theironyard.androidcontacts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener  {
@@ -31,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText number;
     Button addButton;
 
-    //public static final int NOTES_REQUEST = 1;
+    static final int CONTACT_REQUEST = 1;
     static final String CONTACT_CARD = "com.theironyard.androidcontacts.contact";
 
     @Override
@@ -45,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton = (Button) findViewById(R.id.button2);
 
         contacts = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        //loadContacts();
+        loadContacts();
         list.setAdapter(contacts);
 
         addButton.setOnClickListener(this);
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         name.setText("");
         number.setText("");
-        //saveContacts();
+        saveContacts();
     }
 
     @Override
@@ -77,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 contacts.remove(contact);
-                //saveContacts();
+                saveContacts();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new AlertDialog.OnClickListener() {
@@ -91,92 +88,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
 
         return true;
-
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, Main2Activity.class);
         String contact = contacts.getItem(position);
         intent.putExtra(CONTACT_CARD, contact);
-        startActivity(intent);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, CONTACT_REQUEST);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(requestCode == NOTES_REQUEST) {
-//            if(resultCode == RESULT_OK) {
-//                int position = data.getIntExtra("position", 0);
-//                String note = data.getStringExtra("contactNotes");
-//                saveContacts();
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == CONTACT_REQUEST) {
+            if(resultCode == RESULT_OK) {
+                int position = data.getIntExtra("position", 0);
+                System.out.println(position);
+                String newNam = data.getStringExtra("newName");
+                System.out.println(newNam);
+                String newNum = data.getStringExtra("newNumber");
+                System.out.println(newNum);
+                String contact = contacts.getItem(position);
+                System.out.println(contact);
+                contacts.remove(contact);
+                contacts.add(newNam + "  ( " + newNum + "  )");
+            }
+        }
+    }
 
-//    private void saveContacts() {
-//        try {
-//            FileOutputStream fos = openFileOutput(CONTACT_CARD, Context.MODE_PRIVATE);
-//
-//            StringBuilder sb = new StringBuilder();
-//            for(int i = 0; i < contacts.getCount(); i++) {
-//                String contact = contacts.getItem(i);
-//                String note = "";
-//                sb.append(contact + "," + note + "\n");
-//            }
-//            fos.write(sb.toString().getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void saveContacts() {
+        try {
+            FileOutputStream fos = openFileOutput(CONTACT_CARD, Context.MODE_PRIVATE);
 
-//    private void loadContacts() {
-//        try {
-//            FileInputStream fis = openFileInput(CONTACT_CARD);
-//            InputStreamReader isr = new InputStreamReader(fis);
-//            BufferedReader br = new BufferedReader(isr);
-//            int position = 0;
-//            while(br.ready()) {
-//                String contactLine = br.readLine();
-//                String lineParts[] = contactLine.split(",");
-//                if(lineParts.length > 0) {
-//                    contacts.add(lineParts[0]);
-//                    if (lineParts.length > 1) {
-//                        contacts.add(lineParts[1]);
-//                    }
-//                }
-//                position++;
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < contacts.getCount(); i++) {
+                String contact = contacts.getItem(i);
+                String note = "";
+                sb.append(contact + "," + note + "\n");
+            }
+            fos.write(sb.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void loadContacts() {
+        try {
+            FileInputStream fis = openFileInput(CONTACT_CARD);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            int position = 0;
+            while(br.ready()) {
+                String contactLine = br.readLine();
+                String lineParts[] = contactLine.split(",");
+                if(lineParts.length > 0) {
+                    contacts.add(lineParts[0]);
+                    if (lineParts.length > 1) {
+                        contacts.add(lineParts[1]);
+                    }
+                }
+                position++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }//end MainActivity
