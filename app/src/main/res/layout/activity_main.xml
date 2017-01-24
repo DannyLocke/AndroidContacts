@@ -32,19 +32,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
             android:ems="0"
             android:id="@+id/editName"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:hint="Name" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Phone #"
             android:ems="0"
             android:id="@+id/editNumber"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:hint="Phone #" />
 
         <Button
             android:text="ADD"
