@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     static final int CONTACT_REQUEST = 1;
     static final String CONTACT_CARD = "com.theironyard.androidcontacts.contact";
+    final String FILENAME = "contact.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,28 +105,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(requestCode == CONTACT_REQUEST) {
             if(resultCode == RESULT_OK) {
                 int position = data.getIntExtra("position", 0);
-                System.out.println(position);
                 String newNam = data.getStringExtra("newName");
-                System.out.println(newNam);
                 String newNum = data.getStringExtra("newNumber");
-                System.out.println(newNum);
                 String contact = contacts.getItem(position);
-                System.out.println(contact);
                 contacts.remove(contact);
                 contacts.add(newNam + "  ( " + newNum + "  )");
+                saveContacts();
             }
         }
     }
 
     private void saveContacts() {
         try {
-            FileOutputStream fos = openFileOutput(CONTACT_CARD, Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i < contacts.getCount(); i++) {
                 String contact = contacts.getItem(i);
-                String note = "";
-                sb.append(contact + "," + note + "\n");
+                sb.append(contact + "\n");
             }
             fos.write(sb.toString().getBytes());
         } catch (IOException e) {
@@ -135,20 +132,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadContacts() {
         try {
-            FileInputStream fis = openFileInput(CONTACT_CARD);
+            FileInputStream fis = openFileInput(FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
-            int position = 0;
             while(br.ready()) {
                 String contactLine = br.readLine();
-                String lineParts[] = contactLine.split(",");
-                if(lineParts.length > 0) {
-                    contacts.add(lineParts[0]);
-                    if (lineParts.length > 1) {
-                        contacts.add(lineParts[1]);
-                    }
-                }
-                position++;
+                contacts.add(contactLine);
             }
         } catch (IOException e) {
             e.printStackTrace();

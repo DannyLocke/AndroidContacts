@@ -4,15 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity
@@ -30,19 +24,23 @@ public class Main2Activity extends AppCompatActivity
 
         Intent intent = getIntent();
         String contact = intent.getStringExtra(MainActivity.CONTACT_CARD);
-
-        TextView textView = new TextView(this);
-
+        TextView textView = (TextView) findViewById(R.id.textView1);
         textView.setTextSize(25);
         textView.setText(contact);
 
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_main2);
-        layout.addView(textView);
+        newName = (EditText) findViewById(R.id.editName);
+        newName.setText(getIntent().getExtras().getString("newName", ""));
+        newNumber = (EditText) findViewById(R.id.editNumber);
+        newNumber.setText(getIntent().getExtras().getString("newNumber", ""));
+
+        position = getIntent().getExtras().getInt("position", 0);
+
+        Button button = (Button) findViewById(R.id.button2);
+        button.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View view) {
-
+    public void onClick(View v) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("newName", newName.getText().toString());
         returnIntent.putExtra("newNumber", newNumber.getText().toString());
